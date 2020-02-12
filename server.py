@@ -2,21 +2,24 @@ import requests
 
 
 class RequestsHandler:
-    url = "https://gamebackend.pokatilov0802.now.sh/"
+    url = "https://yagame-backend.herokuapp.com/"
+    # url = "http://localhost:5000/"
 
-    @staticmethod
-    def test() -> bool:
-        res = requests.get(RequestsHandler.url)
-        return res.text == 'running'
+    def __init__(self):
+        self.session = requests.Session()
+        self.test()
 
-    @staticmethod
-    def get_json_response(url, data: dict) -> dict:
-        res = requests.post(RequestsHandler.url + url, json=data)
+    def test(self) -> bool:
+        res = self.session.get(RequestsHandler.url)
+        return res.text == '<h1>running</h1>'
+
+    def get_json_response(self, url, data: dict) -> dict:
+        res = self.session.post(RequestsHandler.url + url, json=data)
         if res.status_code == 200:
-            return res.json
-        return False
+            return res.json()
+        return res.status_code
 
 
+handler = RequestsHandler()
 if __name__ == "__main__":
-    handler = RequestsHandler
     print(handler.test())
